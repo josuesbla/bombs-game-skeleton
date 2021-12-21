@@ -25,7 +25,7 @@ export class TimerService {
             .pipe(
                 tap(() => this.bombLifeTimer$.next(null)),
                 tap(() => this.binColorTimer$.next(this._spawnCounter--)),
-                filter(() => this._spawnCounter === 0),
+                filter(() => this._spawnCounter === -1),
                 tap(() => this._spawnCounter = BIN_RESET_COLORS_DELAY)
             )
             .subscribe();

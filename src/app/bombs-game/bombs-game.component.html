@@ -1,4 +1,9 @@
-<app-score-counter></app-score-counter>
-<app-bomb></app-bomb>
-<app-bin></app-bin>
-<app-bin-counter></app-bin-counter>
+<div class="bomb-game-container" #bombContainer>
+    <app-score-counter></app-score-counter>
+    <ng-container *ngFor="let bomb of bombs$ | async">
+        <app-bomb [data]="bomb" (removeBomb)="removeBomb($event)"></app-bomb>
+    </ng-container>
+    
+    <!-- <app-bin></app-bin>
+    <app-bin-counter></app-bin-counter> -->
+</div>

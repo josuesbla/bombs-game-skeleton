@@ -1,6 +1,8 @@
 export interface BombModel {
-    x: number;
-    y: number;
+    left: number;
+    top: number;
     radius: number;
     timer: number;
+    color: string;
+    id: string;
 }
