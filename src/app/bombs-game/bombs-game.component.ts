@@ -1,14 +1,15 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Observable, Subscription } from 'rxjs';
-import { tap, filter, distinctUntilChanged } from 'rxjs/operators';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { tap, filter, map } from 'rxjs/operators';
 import { BOMB_RADIUS, MAX_BOMB_TIMER_VALUE, MIN_BOMB_TIMER_VALUE } from 'src/constants/common.constants';
+import { SCORE_COUNTER } from 'src/enums/score-counter.enum';
 import { BombModel } from 'src/interfaces/bomb.interface';
 import { IntersectService } from 'src/services/intersect.service';
 import { TimerService } from 'src/services/timer.service';
 import { BombsActionsStore } from 'src/store/bomb-actions.store';
 import { bombsSelectors } from 'src/store/bombs.selectors';
-import { generateRandomInteger, getAvailableBinColors, getId } from 'src/utils/common.utils';
+import { convertNumbersToColors, generateRandomInteger, getAvailableBinColors, getId } from 'src/utils/common.utils';
 
 @Component({
   selector: 'app-bombs-game',
@@ -26,10 +27,18 @@ export class BombsGameComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   @HostListener('mouseup') onMouseUp(event: MouseEvent): void {
-    this._store.dispatch(new BombsActionsStore.SetDraggedBombId(''));
+    if (this._draggedBombId) {
+      this._intersectService.onBombRelease();
+      this._store.dispatch(new BombsActionsStore.SetDraggedBombId(''));
+      this._store.dispatch(new BombsActionsStore.SetIntersectionBinId(''));
+    }
   }
 
-  public bombs$: Observable<Array<BombModel>> = this._store.select(bombsSelectors.bombs).pipe(tap(console.log));
+  public bombs$: Observable<Array<BombModel>> = this._store.select(bombsSelectors.bombs);
+  public score$: Observable<number> = this._store.select(bombsSelectors.score);
+  public binColors$: Observable<Array<string>> = this._store.select(bombsSelectors.binColors)
+    .pipe(map((colors: Array<number>) => convertNumbersToColors(colors)));
+  public binCountdown$: BehaviorSubject<number> = new BehaviorSubject(0);
 
   private _draggedBombId$: Observable<string> = this._store.select(bombsSelectors.draggedBombId);
   private _subscriptions: Array<Subscription> = [];
@@ -45,6 +54,7 @@ export class BombsGameComponent implements OnInit, OnDestroy, AfterViewInit {
   ngOnInit(): void {
     this._subscriptions.push(this._timerService.binColorTimer$
       .pipe(
+        tap(timer => this.binCountdown$.next(timer)),
         filter(timer => timer === 0),
         tap(() => this._store.dispatch(new BombsActionsStore.SwapBinColors()))
       )
@@ -82,6 +92,7 @@ export class BombsGameComponent implements OnInit, OnDestroy, AfterViewInit {
 
   public removeBomb(id: string): void {
     this._store.dispatch(new BombsActionsStore.RemoveBomb(id));
+    this._store.dispatch(new BombsActionsStore.SetScore(SCORE_COUNTER.DEC));
   }
 
   private _generateNewBomb = (): BombModel => {

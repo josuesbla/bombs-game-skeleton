@@ -30,7 +30,7 @@ export class TimerService {
             )
             .subscribe();
 
-        interval(5000)
+        interval(3000)
             .pipe(
                 tap(() => this.spawnIntervalTimer$.next(null))
             )

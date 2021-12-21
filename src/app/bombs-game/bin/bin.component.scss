@@ -1,0 +1,20 @@
+.bin-wrapper {
+    width: 110px;
+    height: 110px;
+}
+
+.bin {
+    width: 70px;
+    height: 70px;
+    transition: height 80ms, width 80ms, opacity 80ms, top 80ms;
+    margin: auto;
+    position: relative;
+    top: 20px;
+
+    &.intersected {
+        width: 80px;
+        height: 80px;
+        opacity: 0.5;
+        top: 15px;
+    }
+}

@@ -1,9 +1,11 @@
 <div class="bomb-game-container" #bombContainer>
-    <app-score-counter></app-score-counter>
-    <ng-container *ngFor="let bomb of bombs$ | async">
-        <app-bomb [data]="bomb" (removeBomb)="removeBomb($event)"></app-bomb>
-    </ng-container>
+    <div class="score-counter">Score: <span>{{ score$ | async }}</span></div>
+    <app-bomb *ngFor="let bomb of bombs$ | async" [data]="bomb" (removeBomb)="removeBomb($event)"></app-bomb>
     
-    <!-- <app-bin></app-bin>
-    <app-bin-counter></app-bin-counter> -->
+    <div class="bins-container">
+        <app-bin *ngFor="let color of binColors$ | async" [color]="color"></app-bin>
+    </div>
+    <div class="bin-countdown">
+        Change in:<span>{{ binCountdown$ | async }}</span>
+    </div>
 </div>
