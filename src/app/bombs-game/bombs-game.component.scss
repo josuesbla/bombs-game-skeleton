@@ -6,6 +6,47 @@
     margin: auto;
     border: 2px solid gray;
     position: relative;
+    user-select: none;
+
+    .end-game-modal {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        background-color: rgba(237, 240, 60, 0.3);
+        font-size: 40px;
+        text-align: center;
+        user-select: none;
+
+        .message {
+            line-height: 280px;
+            height: 240px;
+        }
+
+        .score-result {
+            width: 100%;
+            height: 60px;
+            line-height: 60px;
+            font-size: 30px;
+            color: rgb(198, 90, 202);
+
+            span {
+                padding-left: 3px;
+            }
+        }
+
+        .button-reset {
+            width: 100%;
+            height: 70px;
+
+            input {
+                width: 12rem;
+                height: 2.5rem;
+                font-size: 20px;
+            }
+        }
+    }
 
     .bins-container {
         width: 100%;

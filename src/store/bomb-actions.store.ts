@@ -1,5 +1,6 @@
 import { Action } from '@ngrx/store';
 import { BOMB_ACTION_TYPES } from 'src/enums/bomb-action-types.enum';
+import { GAME_STATUS } from 'src/enums/game-status.enum';
 import { SCORE_COUNTER } from 'src/enums/score-counter.enum';
 import { BombModel } from 'src/interfaces/bomb.interface';
 
@@ -42,6 +43,11 @@ export namespace BombsActionsStore {
     export class SetIntersectionBinId implements Action {
         public readonly type: string = BOMB_ACTION_TYPES.SET_INTERSECTED_BIN_ID;
         constructor(public payload: string) {}
+    }
+
+    export class SetGameStatus implements Action {
+        public readonly type: string = BOMB_ACTION_TYPES.SET_GAME_STATUS;
+        constructor(public payload: GAME_STATUS) {}
     }
 
     export type BombsActions = Action & { payload?: any };

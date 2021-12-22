@@ -1,4 +1,4 @@
-import { BOMB_AVAILABLE_COLORS } from 'src/constants/common.constants';
+import { BOMBS_LIMIT, BOMB_AVAILABLE_COLORS, SPAWN_INTERVAL_MAX, SPAWN_INTERVAL_MIN } from 'src/constants/common.constants';
 
 let counterId = 1;
 export const getId = (): string => String(counterId++);
@@ -23,3 +23,8 @@ export const swapBinColors = (initialColors: Array<number>): Array<number> => {
         return acc.concat(item);
     }, []);
 };
+
+export const getIntervalBasedOnEmittedBombs = (total: number): number => {
+    const delta = SPAWN_INTERVAL_MAX - SPAWN_INTERVAL_MIN;
+    return SPAWN_INTERVAL_MAX - Math.round(delta*total/BOMBS_LIMIT);
+}

@@ -5,6 +5,8 @@ export const SPAWN_INTERVAL_MAX = 5000;
 
 export const BOMB_RADIUS = 25;
 
+export const BOMBS_LIMIT = 120;
+
 export const MIN_BOMB_TIMER_VALUE = 5;
 export const MAX_BOMB_TIMER_VALUE = 10;
 

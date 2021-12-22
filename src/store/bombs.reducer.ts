@@ -1,4 +1,6 @@
+import { BOMBS_LIMIT } from 'src/constants/common.constants';
 import { BOMB_ACTION_TYPES } from 'src/enums/bomb-action-types.enum';
+import { GAME_STATUS } from 'src/enums/game-status.enum';
 import { SCORE_COUNTER } from 'src/enums/score-counter.enum';
 import { BombTimer } from 'src/interfaces/bomb-timer.interface';
 import { BombModel } from 'src/interfaces/bomb.interface';
@@ -13,7 +15,8 @@ export const initialBombsState: BombsStoreModel = {
     bombs: [],
     binColors: [0, 1, 2],
     intersectedBinId: '',
-    timers: []
+    timers: [],
+    gameStatus: GAME_STATUS.ON_GOING
 };
 
 export const bombsReducer = (state: BombsStoreModel = initialBombsState, action: BombsActionsStore.BombsActions) => {
@@ -24,7 +27,12 @@ export const bombsReducer = (state: BombsStoreModel = initialBombsState, action:
         case BOMB_ACTION_TYPES.EMIT_NEW_BOMB: {
             const newBomb = <BombModel>action.payload;
             const newTimer = { id: newBomb.id, timer: newBomb.timer };
-            return { ...state, bombs: [ ...state.bombs, newBomb ], timers: [ ...state.timers, newTimer ] };
+            return {
+                ...state,
+                bombs: [ ...state.bombs, newBomb ],
+                timers: [ ...state.timers, newTimer ],
+                totalBombs: Math.min(state.totalBombs + 1, BOMBS_LIMIT)
+            };
         }
         case BOMB_ACTION_TYPES.REMOVE_BOMB: {
             const bombs = state.bombs.filter((bomb: BombModel) => bomb.id !== action.payload);
@@ -46,6 +54,9 @@ export const bombsReducer = (state: BombsStoreModel = initialBombsState, action:
         }
         case BOMB_ACTION_TYPES.SET_INTERSECTED_BIN_ID: {
             return { ...state, intersectedBinId: action.payload };
+        }
+        case BOMB_ACTION_TYPES.SET_GAME_STATUS: {
+            return { ...state, gameStatus: action.payload };
         }
         default:
             return state;
