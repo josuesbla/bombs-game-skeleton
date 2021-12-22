@@ -1,0 +1,15 @@
+<div class="bomb-game-container" #bombContainer>
+    <div class="score-counter">Score:<span>{{ score$ | async }}</span></div>
+    <div class="bin-countdown">Change in:<span>{{ binCountdown$ | async }}</span></div>
+    <app-bomb *ngFor="let bomb of bombs$ | async" [data]="bomb" (removeBomb)="removeBomb($event)"></app-bomb>
+    
+    <div class="bins-container">
+        <app-bin *ngFor="let color of binColors$ | async" [color]="color"></app-bin>
+    </div>
+
+    <div *ngIf="gameStatus !== GAME_STATUS.ON_GOING" class="end-game-modal">
+        <div class="message">{{ gameStatus === GAME_STATUS.WIN ? 'You Win!' : 'Game Over :(' }}</div>
+        <div class="score-result">Your Score: <span>{{ score$ | async }}</span></div>
+        <div class="button-reset"><input type="button" (click)="restartGame()" value="Start New Game"></div>
+    </div>
+</div>

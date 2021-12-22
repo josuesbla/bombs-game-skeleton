@@ -1,0 +1,11 @@
+0-2 hours: reviewing spec and mockup, building initial project structure
+2-7 hours: develop components, services, interfaces, enums, Store basics, drag-n-drop at separate bombs
+7-10 hours: improving Store logic, implement drag-n-drop on container element, remove some unuses code parts
+10-12 hours: implement bins, bins behavior, bins hovering etc., score counting and main game logic and UX
+12-15 hours: implement end-game screens (win/lose), restart game button, add logic for spawn intervals depends on emitted bombs number
+15-16 hours: writing hours.txt file and update README.md
+
+
+further work (TODOs)
+- add unit tests for components and services
+- add necessary font types, pixel-perfect design etc.

@@ -7,6 +7,11 @@ import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
 import { EffectsModule } from '@ngrx/effects';
+import { BombsGameModule } from './bombs-game/bombs-game.module';
+import { TimerService } from 'src/services/timer.service';
+import { IntersectService } from 'src/services/intersect.service';
+import { BOMBS_STORE_NAME } from 'src/constants/common.constants';
+import { bombsReducer } from 'src/store/bombs.reducer';
 
 @NgModule({
   declarations: [
@@ -15,11 +20,19 @@ import { EffectsModule } from '@ngrx/effects';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    StoreModule.forRoot({}, {}),
+    StoreModule.forRoot({
+      [BOMBS_STORE_NAME]: bombsReducer
+    }),
     StoreDevtoolsModule.instrument({ maxAge: 50, logOnly: false }),
-    EffectsModule.forRoot([])
+    EffectsModule.forRoot([]),
+    BombsGameModule
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  providers: [
+    TimerService,
+    IntersectService
+  ],
+  bootstrap: [
+    AppComponent
+  ]
 })
 export class AppModule { }
